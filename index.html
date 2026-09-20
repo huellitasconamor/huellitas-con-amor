@@ -1,3 +1,5 @@
+
+
 <!doctype html>
 <html lang="es">
 <head>
@@ -296,6 +298,59 @@ transition:.2s
 
 .gallery img:hover{
 transform:scale(1.02)
+}
+
+
+/* CATÁLOGO EN IMÁGENES */
+.catalogo-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px
+}
+
+.catalogo-page{
+  background:#fff;
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 8px 28px #00000010;
+  cursor:pointer;
+  transition:.2s
+}
+
+.catalogo-page:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 32px #00000018
+}
+
+.catalogo-page img{
+  width:100%;
+  display:block;
+  height:auto;
+  background:#f5f5f5
+}
+
+.catalogo-page .catalogo-label{
+  padding:10px;
+  text-align:center;
+  font-weight:800;
+  font-size:14px
+}
+
+@media(max-width:900px){
+  .catalogo-grid{
+    grid-template-columns:repeat(2,1fr)
+  }
+}
+
+@media(max-width:560px){
+  .catalogo-grid{
+    grid-template-columns:1fr;
+    gap:10px
+  }
+
+  .catalogo-page{
+    border-radius:14px
+  }
 }
 
 /* PERSONALIZATION */
@@ -711,6 +766,7 @@ padding-bottom:55px
 <a href="#productos">Productos</a>
 <a href="#collares">Collares</a>
 <a href="#catalogo">Catálogo</a>
+    <a href="#catalogo-imagenes">Imágenes</a>
 <a href="#personaliza">Personaliza</a>
 <a href="#galeria">Galería</a>
 <a href="#contacto">Contacto</a>
@@ -876,6 +932,18 @@ title="Catálogo Huellitas con Amor">
 
 </section>
 
+
+
+<!-- CATÁLOGO EN IMÁGENES -->
+<section id="catalogo-imagenes">
+  <div class="wrap">
+    <h2>🖼️ Catálogo de plaquitas</h2>
+    <p class="lead">
+      Explora todas las páginas de nuestro catálogo. Toca cualquier imagen para verla en tamaño completo.
+    </p>
+    <div class="catalogo-grid" id="catalogoGrid"></div>
+  </div>
+</section>
 
 <!-- PERSONALIZA -->
 
@@ -1352,6 +1420,25 @@ onclick="openLightbox(this.src)">
 
 `).join('');
 
+
+
+/* CATÁLOGO EN IMÁGENES */
+const catalogoImages = Array.from(
+  {length:23},
+  (_,i)=>`catalogo_pagina_${String(i+1).padStart(2,'0')}.png`
+);
+
+document.getElementById('catalogoGrid').innerHTML =
+  catalogoImages.map((img,i)=>`
+    <article class="catalogo-page" onclick="openLightbox(this.querySelector('img').src)">
+      <img
+        src="huellitas_web_assets/${img}"
+        alt="Catálogo página ${i+1}"
+        loading="${i < 3 ? 'eager' : 'lazy'}"
+        onerror="this.closest('.catalogo-page').style.display='none'">
+      <div class="catalogo-label">Página ${i+1}</div>
+    </article>
+  `).join('');
 
 /* CARRITO */
 
